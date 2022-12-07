@@ -1,0 +1,191 @@
+/* ================ CORE ================ */
+ul, li{list-style: none !important;}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.d-none, .hide {
+    display: none !important;
+}
+
+p{margin-bottom: 0 !important;}
+
+.fs-12 {
+    font-size: 12px !important;
+}
+
+.fs-14 {
+    font-size: 14px !important;
+}
+
+.fs-16 {
+    font-size: 16px !important;
+}
+
+.fs-18 {
+    font-size: 18px !important;
+}
+
+.fs-20 {
+    font-size: 20px !important;
+}
+
+.fs-22 {
+    font-size: 22px !important;
+}
+
+.fs-24 {
+    font-size: 24px !important;
+}
+
+.fs-26 {
+    font-size: 26px !important;
+}
+
+.fs-28 {
+    font-size: 28px !important;
+}
+
+.fix-text-1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.fix-text-2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.fix-text-3 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.fix-text-4 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
+
+.fix-text-5 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+}
+
+/* ================ END CORE ================ */
+
+
+/* ================ GRID ================ */
+
+.d-grid-2 {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+}
+
+.d-grid-3 {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.d-grid-4 {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.d-grid-5 {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.grid-gap-5 {
+    grid-gap: 5px;
+}
+
+.grid-gap-10 {
+    grid-gap: 10px;
+}
+
+.grid-gap-15 {
+    grid-gap: 15px;
+}
+
+.grid-gap-20 {
+    grid-gap: 20px;
+}
+
+.grid-gap-25 {
+    grid-gap: 25px;
+}
+
+.grid-gap-30 {
+    grid-gap: 30px;
+}
+
+.grid-gap-35 {
+    grid-gap: 35px;
+}
+
+.grid-gap-40 {
+    grid-gap: 40px;
+}
+
+.grid-gap-45 {
+    grid-gap: 45px;
+}
+
+.grid-gap-50 {
+    grid-gap: 50px;
+}
+
+/* ================ END GRID ================ */
+
+
+
+/* ================ CUSTOM ================ */
+
+.background-gray {
+    background-color: #EFEFEF;
+}
+
+.border-top-gray {
+    border-top: 1px solid #e0dfdf;
+}
+
+.border-bottom-gray {
+    border-bottom: 1px solid #e0dfdf;
+}
+
+.border-left-gray {
+    border-left: 1px solid #e0dfdf;
+}
+
+.border-right-gray {
+    border-right: 1px solid #e0dfdf;
+}
+
+/* ================ END CUSTOM ================ */

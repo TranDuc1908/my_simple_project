@@ -1,0 +1,46 @@
+<?php
+
+global $conn, $title;
+
+class dbBasic
+{
+    function connect(){
+        global $core;
+        $servername = "localhost";
+        $database = "hjhnfprzhosting_vne-car";
+        $username = "hjhnfprzhosting_TranDuc";
+        $password = "TranDuc@-96";
+        $conn = mysqli_connect($servername, $username, $password, $database);if (!$conn) $core->returnAPI("fail", "Kết nối database thất bại");return $conn;
+    }
+    function getListId($cons = ''){global $conn;if($cons != '') $cons=' WHERE '.$cons;$arr = array();$conn = $this->connect();if ($sql = mysqli_query($conn, 'SELECT ' . $this->pkey . ' FROM ' . $this->tbl . ' ' . $cons)) {while ($_cn = mysqli_fetch_assoc($sql)) $arr[] = $_cn[$this->pkey];}if ($sql) mysqli_free_result($sql);mysqli_close($conn);return $arr;}
+    function getOne($id){if (!$id) return false;$id = intval($id);$arr = [];$conn = $this->connect();if ($sql = mysqli_query($conn, 'SELECT * FROM ' . $this->tbl . ' where ' . $this->pkey . '=' . $id)) {$arr = mysqli_fetch_assoc($sql);if ($sql) mysqli_free_result($sql);}mysqli_close($conn);return $arr;}
+    function first($cons = ""){if ($cons != '') $cons = ' WHERE ' . $cons;$arr = array();$conn = $this->connect();if ($sql = mysqli_query($conn, 'SELECT * FROM ' . $this->tbl . ' ' . $cons . " order by id desc limit 1")) {$arr = mysqli_fetch_assoc($sql);if ($sql) mysqli_free_result($sql);}if ($sql) mysqli_free_result($sql);mysqli_close($conn);return $arr;}
+    function getAll($cons = ''){if ($cons != '') $cons = ' WHERE ' . $cons;$arr = array();$conn = $this->connect();if ($sql = mysqli_query($conn, 'SELECT * FROM ' . $this->tbl . ' ' . $cons)) {while ($_cn = mysqli_fetch_assoc($sql)) $arr[] = $_cn;}if ($sql) mysqli_free_result($sql);mysqli_close($conn);return $arr;}
+    function insertOne($array){if (!is_array($array)) return false;$field = "";$value = "";if ($array) foreach ($array as $key => $val) {if (!$field) $field = addslashes($key);else $field .= ',' . addslashes($key);if (!$value) $value = '"' . addslashes($val) . '"';else $value .= ',"' . addslashes($val) . '"';}$conn = $this->connect();$res = mysqli_query($conn, 'INSERT INTO ' . $this->tbl . ' (' . $field . ') VALUES(' . $value . ')');mysqli_close($conn);return $res;}
+    function updateOne($id, $array){if (!is_array($array)) return false;$value = '';if ($array) foreach ($array as $key => $val) {if (!$value) $value = addslashes($key)  . '="' . addslashes(utf8_encode($val)) . '"';else $value .= ',' . addslashes($key) . '="' . addslashes(utf8_encode($val)) . '"';}$conn = $this->connect();$res = mysqli_query($conn, 'UPDATE ' . $this->tbl . ' SET ' . $value . ' WHERE ' . $this->pkey . '=' . $id);mysqli_query($conn, 'set names utf8');mysqli_close($conn);return $res;}
+    function getPage($cons, $rpp = 50, $first = 'Trang đầu', $end = 'Cuối'){$getPage = addslashes($_GET['page']);$page = ($getPage) ? $getPage : 1;if ($page > 2) $paging[] = array(0 => 1, 1 => $first);if ($page > 1) $paging[] = array(0 => ($page - 1), 1 => '<');$paging[] = array(0 => $page, 1 =>  $page);$all = $this->getListId($cons);if ($all && count($all) >= $rpp) $paging[] = array(0 => ($page + 1), 1 => '>');return $paging;}
+}
+ 
+class Core
+{
+    function returnAPI($res, $message = "", $data = ""){if ($res == "fail" && !$message && !$data) die(json_encode(["res" => $res, "message" => "Lỗi kỹ thuật"]));if ($res == "user_lvl" && !$message && !$data) die(json_encode(["res" => "warning", "message" => "Không đủ quyền hạn"]));if ($res == "locked" && !$message && !$data) die(json_encode(["res" => "warning", "message" => "Cộng đồng tạm thời đã bị khóa"]));die(json_encode(["res" => $res, "message" => $message, "data" => $data]));}
+    function execCURL($type, $url, $arr = []){   $timeout = 60;   $curl = curl_init();if ($type == "post") {curl_setopt_array($curl, array(CURLOPT_URL => $url,CURLOPT_RETURNTRANSFER => true,CURLOPT_ENCODING => '',CURLOPT_MAXREDIRS => 10,CURLOPT_TIMEOUT => $timeout,CURLOPT_FOLLOWLOCATION => true,CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,CURLOPT_CUSTOMREQUEST => 'POST',CURLOPT_POSTFIELDS => $arr,));}else{curl_setopt_array($curl, array(CURLOPT_URL => $url,CURLOPT_RETURNTRANSFER => true,CURLOPT_ENCODING => '',CURLOPT_MAXREDIRS => 10,CURLOPT_TIMEOUT => $timeout,CURLOPT_FOLLOWLOCATION => true,CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,CURLOPT_CUSTOMREQUEST => 'GET',));}$response = curl_exec($curl);$err = curl_error($curl);curl_close($curl);if ($err) {echo $err;die;}return $response;}
+    function stringToPrice($str){$res = "";$str = trim($str);$str = explode(" ", $str);if ($str[1] == "triệu") {$res = $str[0] * 1000000;} else {$res = $str[0] * 1000000000 + $str[2] * 1000000;}return $res;}
+    function priceToString($price){ $res = $price / 1000000000;$bil = floor($res);$fraction = $res - $bil;$mil = str_replace("0.", "", substr($fraction, 0, 5));if ($res > 1) return $bil . " tỷ " . $mil . " triệu";else return $mil . " triệu";}
+    function getLinkReplateGET($arr){$res = $_GET;$str = '?';$i = 0;if ($arr) foreach ($arr as $key => $val) {$res[$key] = $val;if ($val == '') unset($res[$key]);}if ($res) foreach ($res as $key => $val) {if ($i == 0) $i = 1;else $str .= '&';$str .= $key . '=' . $val;}return $str;}
+    function displayPagination($paging){$html = '<div class="pagination"><ul class="d-flex">';foreach ($paging as $one) {$html .= '<li style="padding-left:10px; padding-right:10px" class="';if ((isset($_GET["page"]) ? $_GET["page"] : 1) == $one[0]) $html .= 'active';$html .= '"><a href="' . $this->getLinkReplateGET(array('page'=>$one[0])) .'">';$html .= $one[1] .'</a></li>';}$html .= '</ul></div>';echo $html;die;}
+    function displayDeadEnd(){$str="Ngõ cụt rồi hê hê :>"; echo '<div style="width:100%;height:100%;display:flex;justify-content:center;align-items:center"><h1>'.$str.'</h1></div>';die;}
+    function header($url){header("link: ".$url);die;}
+    function toSlug($doc) {$str = addslashes(html_entity_decode($doc));$str = str_replace('|', '', $str);$str = $this->toNormal($str);$str = preg_replace('/[^a-zA-Z0-9\/_|+ -]/', '', $str);$str = preg_replace('/( )/', '-', $str);$str = str_replace('--', '-', $str);$str = str_replace('/', '-', $str);$str = str_replace('\/', '', $str);$str = str_replace('+', '', $str);$str = strtolower($str);$str = stripslashes($str);return trim($str, '-');}
+    function timeAgo($tm,$rcs = 0) {$cur_tm = time(); $dif = $cur_tm-$tm;if($dif<=0) return 'gần đây';$pds = array('giây','phút','giờ','ngày','tuần','tháng','năm','thập kỉ');$lngh = array(1,60,3600,86400,604800,2630880,31570560,315705600);for($v = sizeof($lngh)-1; ($v >= 0)&&(($no = $dif/$lngh[$v])<=1); $v--); if($v < 0) $v = 0; $_tm = $cur_tm-($dif%$lngh[$v]);$no = floor($no); if($no <> 1) $pds[$v] .=''; $x=sprintf("%d %s ",$no,$pds[$v]);if(($rcs == 1)&&($v >= 1)&&(($cur_tm-$_tm) > 0)) $x .= timeAgo($_tm);return $x.' trước';}
+    function pathToArray($path) {if(!$path) return array();$path = trim($path,'|'); if(!$path) return array();$path = str_replace('||','|',$path); if(!$path) return array();return explode('|',$path);}
+    function arrayToPath($arr) {if(is_array($arr)) return '|'.implode('|',$arr).'|';else return false;}
+    function uploadFile($_file, $allowed=null, $filename=null) {$extension = strtolower(pathinfo($_FILES[$_file]['name'], PATHINFO_EXTENSION));if($allowed && !in_array($extension, $allowed)) return false; if(!$filename) $filename = date('ymdHis');$f = 'uploads/'.$filename.'.'.$extension;if(move_uploaded_file($_FILES[$_file]['tmp_name'], $f)) return $filename.'.'.$extension; else return false;}
+    function downloadFile($url, $allowed=null, $k='') {if(stripos($url, '?')) $url = array_shift(explode('?', $url));$extension = strtolower(end(explode('.', $url))); $filename = $this->toSlug(basename(rtrim($url, '.'.$extension))).'-'.date('His').$k;if($allowed && !in_array($extension, $allowed)) return false; $data = $this->execCURL("get",$this->encodeURI($url)) ;if($data) {$upload = file_put_contents('uploads/'.$filename.'.'.$extension, $data);if($upload) return $filename.'.'.$extension;}else return false;}
+    function removeArrayByValue($array, $value) {if(($key = array_search($value, $array)) !== false) unset($array[$key]);return $array;}
+    function removeArrayByArray($array_input, $array_search) {if($array_search) foreach($array_search as $v) $array_input = $this->removeArrayByValue($array_input, $v);return $array_input;}
+    function phoneFilter($phone){if (!$phone) $this->returnAPI("error", "Missing params: phone");$phone = trim($phone);$count = strlen($phone);$form = ltrim($phone, $phone[0]);if($count < 9 || $count > 13 || !is_numeric($form)) $this->returnAPI("error", "Wrong form");if(substr($phone,0,1) == "1"){return $phone;}elseif (substr($phone,0,1) == "0") {return "+84".substr($phone,1);}elseif (substr($phone,0,2) == "84") {return "+".$phone;}elseif (substr($phone,0,3) == "+84") {return $phone;}elseif(substr($phone,0,1) != "0") {return "+84".$phone;}else{return false;}}
+    function removeTagBr($str){$str = str_replace("<br />", "", $str);return $str;}
+    function strip_onlyTag($inp, $arr){$allow = "<h1><h2><h3><h4><h5><img><picture><figure><small><p><strong><a><div><section>";foreach($arr as $string){$allow = str_replace($string, "", $allow);}return strip_tags($inp, $allow);}
+}
+$core = new Core();

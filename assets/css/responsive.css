@@ -1,0 +1,21 @@
+@media only screen and (max-width: 600px) {
+    .d-mb-grid-2 {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .d-mb-grid-3 {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    
+    .d-mb-grid-4 {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+    
+    .d-mb-grid-5 {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    }
+}

@@ -1,0 +1,44 @@
+:root {
+    --main-bg-color: #fff;
+    --accent-bg-color: #2379cc;
+    --container1-bg-color: #fff;
+    --container2-bg-color: #fff;
+    --main-text-color: #222;
+    --sub-text-color: #333;
+    --accent-text-color: #4382be;
+    --gold-text-color: #ffcc24;
+    --shadow-color: #0008;
+    --shadow-color-light: #0003;
+    --font: 'Roboto', sans-serif;
+}
+*{box-sizing: border-box;}
+body{font-family: var(--font);}
+.fs-18{font-size: 18px;}
+.font-color-blue{color: var(--accent-bg-color);}
+.w-10{width: 10%;}
+
+
+.header-top{height: 120px;z-index: -1;background-color: var(--accent-bg-color);box-shadow:#0003}
+.my-name{font-weight: 500;color: var(--main-text-color);font-size: 2.5rem;font-family: var(--font);}
+.sub-my-name{color: var(--main-text-color);font-size: 1.5rem;font-family: var(--font);font-style: italic; font-weight: 300;}
+
+
+.avatar-wrapper{margin-top: -95px; border-radius: 50%;overflow: hidden;padding: 10px;background-color: #fff; box-shadow: 0 0 10px var(--shadow-color)}
+.avatar-wrapper img{width: 250px; height: 250px; border-radius: 50%; z-index: 1;}
+
+
+.body-section>.title{font-weight: 300;color: var(--accent-text-color);font-family: var(--font);font-size: 2rem;border-bottom: 1px solid var(--accent-text-color);}
+.info-wrapper>.title{background-color: var(--accent-bg-color); padding: 5px 10px; border-radius: 10px; color: #fff; width: fit-content; font-size: 18px;}
+.info-wrapper>.text-wrapper{border: 1px solid var(--accent-bg-color); padding: 10px 1.5rem; border-radius: 5px;margin-top: -16px;}
+.text-wrapper{display: grid; grid-template-columns: 1fr 1fr; grid-gap:10px}
+.text-wrapper .text{margin-top: 20px;display: flex;}
+.text-wrapper .text>p:nth-child(1){width: 25%;}
+.text>p{margin-bottom: 10px;}
+.company>.title{color: var(--accent-bg-color); font-weight: 700px; font-size: 18px;}
+.company>.title>span{font-weight: 300; background-color: #ff881d; color: #fff; border-radius: 5px; padding: 5px 10px; font-size: 14px; margin-left: 10px;}
+.projects .item{border-bottom: 1px solid var(--accent-bg-color); padding-bottom: 10px;}
+.projects .item:last-child{border-bottom: unset !important;}
+.project-image{width: 150px; height: 150px; background-color: #fff; display: flex; align-items: center; justify-content: center;}
+.project-image>img{width: 100%; height: auto;}
+.url a{color: var(--accent-bg-color);}
+.project-right__side p.title{font-size: 18px; font-weight: 600;}
